@@ -1,3 +1,5 @@
+import { validate } from "@middlewares/validate.js";
+import { RestaurantSchema, type Restaurant } from "@schemas/restaurant.js";
 import {
   Router,
   type NextFunction,
@@ -7,8 +9,13 @@ import {
 
 const router: Router = Router();
 
-router.get("/", async (req: Request, res: Response, next: NextFunction) => {
-  res.status(200).json({ msg: "This is restaurants route" });
-});
+router.post(
+  "/",
+  validate(RestaurantSchema),
+  async (req: Request, res: Response, next: NextFunction) => {
+    const data = req.body as Restaurant;
+    res.send("Hello");
+  }
+);
 
 export default router;

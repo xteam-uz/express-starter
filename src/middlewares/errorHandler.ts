@@ -9,5 +9,5 @@ export function errorHandler(
 ) {
   console.error(err);
   errorResponse(res, 500, err);
-  // next();
+  next();
 }

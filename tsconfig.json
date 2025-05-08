@@ -7,7 +7,8 @@
     "paths": {
       "@routes/*": ["src/routes/*"],
       "@middlewares/*": ["src/middlewares/*"],
-      "@utils/*": ["src/utils/*"]
+      "@utils/*": ["src/utils/*"],
+      "@schemas/*": ["src/schemas/*"]
     },
     "outDir": "dist",
     "esModuleInterop": true,
