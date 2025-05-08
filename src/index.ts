@@ -1,11 +1,10 @@
 import express from "express";
 import { SERVER } from "./config/config.js";
+import App from "./app.js";
 
 const app = express();
 
-app.use("/", (req, res) => {
-  res.status(200).json({ msg: "Hello World" });
-});
+App(app);
 
 app
   .listen(SERVER.SERVER_PORT, () =>
