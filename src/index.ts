@@ -6,12 +6,10 @@ const app = express();
 
 App(app);
 
-app
-  .listen(SERVER.SERVER_PORT, () =>
+app.listen(SERVER.SERVER_PORT, () =>
     console.log(
-      `Server running on http://${SERVER.SERVER_HOST}:${SERVER.SERVER_PORT}`
+        `Server running on http://${SERVER.SERVER_HOST}:${SERVER.SERVER_PORT}`
     )
-  )
-  .on("error", (error) => {
+).on("error", (error) => {
     throw new Error(error.message);
-  });
+});
