@@ -1,6 +1,6 @@
 import express from "express";
-import { SERVER } from "./config/config.js";
-import App from "./app.js";
+import { SERVER } from "./config/config";
+import App from "./app";
 
 const app = express();
 
