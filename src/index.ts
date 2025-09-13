@@ -1,15 +1,15 @@
 import express from "express";
-import { SERVER } from "./config/config";
-import App from "./app";
+import { SERVER_HOST, SERVER_PORT } from "@config/config.js";
+import App from "./app.js";
 
 const app = express();
 
 App(app);
 
-app.listen(SERVER.SERVER_PORT, () =>
-    console.log(
-        `Server running on http://${SERVER.SERVER_HOST}:${SERVER.SERVER_PORT}`
-    )
-).on("error", (error) => {
+app
+  .listen(SERVER_PORT || 8000, () =>
+    console.log(`Server running on http://${SERVER_HOST}:${SERVER_PORT}`),
+  )
+  .on("error", (error) => {
     throw new Error(error.message);
-});
+  });

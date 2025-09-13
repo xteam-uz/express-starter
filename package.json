@@ -6,8 +6,8 @@
     "type": "module",
     "scripts": {
         "dev": "tsx --watch --env-file=.env src/index.ts",
-        "build": "tsc",
-        "start": "node --env-file .env dist/src/index.js"
+        "build": "tsc && tsc-alias",
+        "start": "node --env-file=.env dist/index.js"
     },
     "keywords": [
         "express",
@@ -18,11 +18,16 @@
     "license": "ISC",
     "packageManager": "pnpm@10.10.0",
     "dependencies": {
-        "express": "^5.1.0"
+        "express": "^5.1.0",
+        "mongoose": "^8.18.1"
     },
     "devDependencies": {
         "@types/express": "^5.0.1",
+        "@types/mongoose": "^5.11.96",
+        "@types/morgan": "^1.9.10",
         "@types/node": "^22.15.16",
+        "morgan": "^1.10.1",
+        "tsc-alias": "^1.8.16",
         "tsx": "^4.19.4",
         "typescript": "^5.8.3"
     }
