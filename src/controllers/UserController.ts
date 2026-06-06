@@ -6,9 +6,9 @@ class UserController {
     getAllUsers = async (req: Request, res: Response) => {
         try {
             const users: User[] = await UserModel.find();
-            return res.status(200).json({ date: users });
+            return res.status(200).json({ data: users });
         } catch (error) {
-            return res.sendStatus(500).json({ message: "Server Error", error });
+            return res.status(500).json({ message: "Server Error", error });
         }
     };
 
@@ -16,9 +16,9 @@ class UserController {
         try {
             const { id } = req.params;
             const user: User | null = await UserModel.findById(id);
-            return res.status(200).json({ date: user });
+            return res.status(200).json({ data: user });
         } catch (error) {
-            return res.sendStatus(500).json({ message: "Server Error", error });
+            return res.status(500).json({ message: "Server Error", error });
         }
     };
 
