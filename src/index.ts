@@ -1,13 +1,42 @@
-import express from "express";
-import { SERVER_HOST, SERVER_PORT } from "@config/config.js";
-import App from "./app.js";
+import type { Server } from "node:http";
+import { env } from "@config/env.js";
+import { logger } from "@config/logger.js";
+import { connectDatabase, disconnectDatabase } from "@infrastructure/database/mongoose.js";
+import { createApp } from "./app.js";
 
-const app = express();
+const start = async (): Promise<Server> => {
+  if (env.DB_URI) {
+    await connectDatabase(env.DB_URI);
+  } else {
+    logger.warn("DB_URI is not configured. Database-backed routes will fail until it is provided.");
+  }
 
-App(app);
+  const app = createApp();
+  const server = app.listen(env.PORT, env.HOST, () => {
+    logger.info({ host: env.HOST, port: env.PORT }, "Server started");
+  });
 
-app.listen(SERVER_PORT || 8000, () =>
-    console.log(`Server running on http://${SERVER_HOST}:${SERVER_PORT}`),
-).on("error", (error) => {
-    throw new Error(error.message);
+  const shutdown = async (signal: NodeJS.Signals): Promise<void> => {
+    logger.info({ signal }, "Shutdown signal received");
+    server.close(async () => {
+      await disconnectDatabase();
+      logger.info("Shutdown complete");
+      process.exit(0);
+    });
+  };
+
+  process.on("SIGTERM", (signal) => {
+    void shutdown(signal);
+  });
+
+  process.on("SIGINT", (signal) => {
+    void shutdown(signal);
+  });
+
+  return server;
+};
+
+void start().catch((error: unknown) => {
+  logger.fatal({ err: error }, "Failed to start server");
+  process.exit(1);
 });

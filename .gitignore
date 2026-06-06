@@ -1,7 +1,10 @@
 node_modules/
 .env
+.env.*
+!.env.example
 dist/
-
-# pnpm
-pnpm-lock.yaml
-pnpm-workspace.yaml
+coverage/
+.DS_Store
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
