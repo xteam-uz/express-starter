@@ -24,7 +24,9 @@ export class MongooseUserRepository implements UserRepository {
   }
 
   async findByEmail(email: string): Promise<UserRecord | null> {
-    const user = await UserModel.findOne({ email } satisfies FilterQuery<UserDocument>).select("+passwordHash").exec();
+    const user = await UserModel.findOne({ email: { $eq: email } } satisfies FilterQuery<UserDocument>)
+      .select("+passwordHash")
+      .exec();
     return user ? toUserRecord(user) : null;
   }
 
