@@ -1,32 +1,42 @@
-import { json, type Application } from "express";
-import morgan from "morgan";
-import mongoose from "mongoose";
-import UserRouter from "@routes/user.js";
-import { logger } from "@middlewares/logger.js";
-import { errorHandler } from "@middlewares/errorHandler.js";
+import express, { type Application } from "express";
+import { createHealthRouter } from "@modules/health/health.routes.js";
+import { createOpenApiRouter } from "@modules/openapi/openapi.routes.js";
+import { MongooseUserRepository } from "@modules/users/user.repository.js";
+import { createUserRouter } from "@modules/users/user.routes.js";
+import { UserService } from "@modules/users/user.service.js";
+import type { UserRepository } from "@modules/users/user.types.js";
+import { requestId } from "@shared/http/request-id.js";
+import { errorHandler } from "@shared/middleware/error-handler.js";
+import { notFoundHandler } from "@shared/middleware/not-found.js";
+import { rateLimit } from "@shared/middleware/rate-limit.js";
+import { requestLogger } from "@shared/middleware/request-logger.js";
+import { cors, securityHeaders } from "@shared/middleware/security.js";
 
-const App = (app: Application): void => {
-    // Middlewares
-    app.use(json());
-    // app.use(morgan("dev"));
-
-    // Database connection
-    mongoose
-        .connect(process.env.DB_URI || "mongodb://localhost:27017", {
-            dbName: "express_crud",
-        })
-        .then(() => {
-            console.log("Database connected");
-        })
-        .catch((error) => {
-            console.log("Database connection error: ", error);
-        });
-
-    // Routes
-    app.use("/api/users", logger, UserRouter);
-
-    // Error handler
-    app.use(errorHandler);
+export type AppDependencies = {
+  userRepository?: UserRepository;
 };
 
-export default App;
+export const createApp = (dependencies: AppDependencies = {}): Application => {
+  const app = express();
+  const userRepository = dependencies.userRepository ?? new MongooseUserRepository();
+  const userService = new UserService(userRepository);
+
+  app.disable("x-powered-by");
+  app.use(requestId);
+  app.use(requestLogger);
+  app.use(securityHeaders);
+  app.use(cors);
+  app.use(express.json({ limit: "100kb" }));
+  app.use(rateLimit);
+
+  app.use("/health", createHealthRouter());
+  app.use("/docs", createOpenApiRouter());
+  app.use("/api/users", createUserRouter(userService));
+
+  app.use(notFoundHandler);
+  app.use(errorHandler);
+
+  return app;
+};
+
+export default createApp;

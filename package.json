@@ -1,36 +1,37 @@
 {
-    "name": "express-starter",
-    "version": "1.0.0",
-    "description": "",
-    "main": "index.js",
-    "type": "module",
-    "scripts": {
-        "dev": "tsx --watch --env-file=.env src/index.ts",
-        "build": "tsc && tsc-alias",
-        "start": "node --env-file=.env dist/index.js"
-    },
-    "keywords": [
-        "express",
-        "node.js",
-        "typescript"
-    ],
-    "author": "Mirsoli Mirsultonov<mirrrrrr@yahoo.com>",
-    "license": "ISC",
-    "packageManager": "pnpm@10.10.0",
-    "dependencies": {
-        "chalk": "^5.6.2",
-        "express": "^5.1.0",
-        "mongoose": "^8.18.1"
-    },
-    "devDependencies": {
-        "@types/chalk": "^0.4.31",
-        "@types/express": "^5.0.1",
-        "@types/mongoose": "^5.11.96",
-        "@types/morgan": "^1.9.10",
-        "@types/node": "^22.15.16",
-        "morgan": "^1.10.1",
-        "tsc-alias": "^1.8.16",
-        "tsx": "^4.19.4",
-        "typescript": "^5.8.3"
-    }
+  "name": "express-starter",
+  "version": "2.0.0",
+  "description": "A simple, production-minded Express 5 + TypeScript starter kit.",
+  "main": "dist/index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx --watch --env-file=.env src/index.ts",
+    "build": "tsc && tsc-alias",
+    "start": "node --env-file=.env dist/index.js",
+    "test": "tsx --test test/*.test.ts",
+    "test:watch": "tsx --test --watch test/*.test.ts",
+    "lint": "tsc --noEmit",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "express",
+    "node.js",
+    "typescript",
+    "starter-kit",
+    "api"
+  ],
+  "author": "Mirsoli Mirsultonov<mirrrrrr@yahoo.com>",
+  "license": "ISC",
+  "packageManager": "pnpm@10.10.0",
+  "dependencies": {
+    "express": "^5.1.0",
+    "mongoose": "^8.18.1"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.1",
+    "@types/node": "^22.15.16",
+    "tsc-alias": "^1.8.16",
+    "tsx": "^4.19.4",
+    "typescript": "^5.8.3"
+  }
 }
